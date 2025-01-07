@@ -24,4 +24,38 @@ class CompteBancaire:
         if self.solde >= montant:
             self.solde -= montant
         else:
-            print("Solde insuffisant")
+            print("Solde negatif")
+class Banque:
+    def __init__(self):
+        self.comptes = []
+    
+    def ajouter_compte(self, compte):
+        self.comptes.append(compte)
+    
+    def afficher_comptes(self):
+        for compte in self.comptes:
+            print(f"Compte de {compte.titulaire}: Solde : {compte.solde}")
+    
+    def transferer(self, compte_quiDemande, compte_quiRecoit, montant):
+        if montant <= compte_quiDemande.solde:
+            compte_quiDemande.retirer(montant)
+            compte_quiRecoit.deposer(montant)
+            print(f"Transfert de {montant} euros effectué de {compte_quiDemande.titulaire} à {compte_quiRecoit.titulaire}")
+        else:
+            print("Solde trops grand")
+
+banque = Banque()
+compte1 = CompteBancaire("Artemis")
+compte2 = CompteBancaire("Zeus")
+banque.ajouter_compte(compte1)
+banque.ajouter_compte(compte2)
+banque.transferer(compte1, compte2, 50)
+compte1.deposer(1000)
+compte2.deposer(500)
+banque.afficher_comptes()
+banque.transferer(compte2, compte1, 100)
+compte2.deposer(73)
+banque.afficher_comptes()
+compte1.retirer(280)
+banque.afficher_comptes()
+

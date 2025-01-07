@@ -28,8 +28,8 @@ class Serveur:
         self.nom = nom
         self.commandes_prises = []
     
-    def prendre_commande(self, plat):
-        self.commandes_prises.append(plat)
+    def prendre_commande(self, plat,client):
+        self.commandes_prises.append((plat,client))
 
 class Client:
     def __init__(self, nom):
@@ -37,7 +37,11 @@ class Client:
         self.commandes_commander = []
     
     def commander(self, plat):
-        self.commandes_commander(plat)
+        self.commandes_commander.append(plat)
+    
+    def afficher_commandes(self):
+        for commande in self.commandes_commander:
+            print(f"Commande de {commande.nom}")
 
 class Restaurant:
     def __init__(self):
@@ -51,8 +55,8 @@ class Restaurant:
     def gerer_commandes(self):
         for serveur in self.serveurs:
             if serveur.commandes_prises:
-                commande = serveur.commandes_prises.pop(0)
-                print(f"{serveur.nom} a pris la commande de {commande.nom}")
+               plat, client = serveur.commandes_prises.pop(0)
+               print(f"le plat de {plat.nom} a ete commander par {client.nom}")
 
 restaurant = Restaurant()
 
@@ -63,9 +67,12 @@ restaurant.plats_disponibles.extend([plat1, plat2, plat3])
 
 serveur1 = Serveur("Hagrid")
 serveur2 = Serveur("Voldemort")
+client1 = Client("Ron")
+client2 = Client("Luna")
+client1.commander(plat1)
 restaurant.serveurs.extend([serveur1, serveur2])
 restaurant.afficher_menu()
 
 restaurant.gerer_commandes()
-serveur1.prendre_commande(plat2)
+serveur1.prendre_commande(plat2, client1)
 restaurant.gerer_commandes()
